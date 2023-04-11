@@ -56,6 +56,9 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   Wire.begin();
+  //pressure sensor
+  sensor.reset();
+  sensor.begin();
   for (int i=0; i<7; i++)
   {
     pinMode(inApin[i], OUTPUT);
