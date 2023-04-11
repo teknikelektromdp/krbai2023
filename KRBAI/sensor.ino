@@ -24,3 +24,18 @@ void CMPS(){
   yaw = angle16 / 10, DEC;
 }
 
+double sealevel(double P, double A)
+// Given a pressure P (mbar) taken at a specific altitude (meters),
+// return the equivalent pressure (mbar) at sea level.
+// This produces pressure readings that can be used for weather measurements.
+{
+  return(P/pow(1-(A/44330.0),5.255));
+}
+
+double altitude(double P, double P0)
+// Given a pressure measurement P (mbar) and the pressure at a baseline P0 (mbar),
+// return altitude (meters) above baseline.
+{
+  return(44330.0*(1-pow(P/P0,1/5.255)));
+}
+
