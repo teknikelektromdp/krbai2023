@@ -77,16 +77,17 @@ void setup() {
   
 //  depth_kp = EEPROM.read(4); depth_ki = EEPROM.read(5)*0.1;  depth_kd = EEPROM.read(6)*0.1;
   depth_kp = 10; depth_ki = 0; depth_kd = 0;
-
-  
+  Serial.print("Kp = "); Serial.print(depth_kp);
+  Serial.print(", Ki = "); Serial.print(depth_ki);
+  Serial.print(", Kd = "); Serial.print(depth_kd);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  motorGo(0,cw,100);
-  motorGo(1,cw,100);
-  motorGo(2,cw,100);
-  motorGo(3,cw,100);
+//  motorGo(0,cw,100);
+//  motorGo(1,cw,100);
+//  motorGo(2,cw,100);
+//  motorGo(3,cw,100);
 
   CMPS();
   
@@ -98,12 +99,12 @@ void loop() {
   
   PID_Depth(depth_kp, depth_ki, depth_kd, avg);
   if(mode){
-    motorGo(4,de_Output>0?cw:ccw,abs(de_Output)); 
-    motorGo(5,de_Output>0?ccw:cw,abs(de_Output));
+    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
+    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
   }
   else{
-    motorGo(4,cw,0); 
-    motorGo(5,cw,0);
+    motorGo(0,cw,0); 
+    motorGo(1,cw,0);
   }
   
   tampil();
