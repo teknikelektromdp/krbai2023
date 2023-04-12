@@ -83,6 +83,10 @@ void setup() {
   Serial.print("Kp = "); Serial.print(depth_kp);
   Serial.print(", Ki = "); Serial.print(depth_ki);
   Serial.print(", Kd = "); Serial.print(depth_kd);
+
+  pressure_abs = sensor.getPressure(ADC_1024);
+  reset_level = pressure_abs;
+  set_level = 100;
 }
 
 void loop() {
@@ -104,6 +108,7 @@ void loop() {
   if(mode){
     motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
     motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
+    Serial.print("kec : "); Serial.println(de_Output);
   }
   else{
     motorGo(0,cw,0); 
