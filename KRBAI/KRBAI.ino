@@ -8,6 +8,7 @@
  * Hardware Platform : Arduino Pro Mega2560
  ********************************************/
 #include <Wire.h>
+#include <Servo.h>
 #include "SparkFun_MS5803_I2C.h"
 #include "I2Cdev.h"
 #include "EEPROM.h"
@@ -22,6 +23,11 @@
 
 #define CMPS12_ADDRESS 0x60  // Address of CMPS12 shifted right one bit for arduino wire library
 #define ANGLE_8  1           // Register to read 8bit angle from
+
+Servo thrus_ka;
+Servo thrus_ki;
+byte thrus_ka_pin = 9;
+byte thrus_ki_pin = 10;
 
 RunningAverage myRA(10);
 
@@ -50,6 +56,7 @@ PID depth_PID(&de_Input, &de_Output, &de_Setpoint,6,2,1, DIRECT);
 double Speed_ka = 0, Speed_ki = 0;
 float depth_kp,depth_ki,depth_kd;
 
+String inputString1 = "";
 boolean mode = true;
 
 void setup() {
@@ -59,6 +66,10 @@ void setup() {
   //pressure sensor
   sensor.reset();
   sensor.begin();
+  thrus_ka.attach(thrus_ka_pin);
+  thrus_ki.attach(thrus_ki_pin);
+  thrus_ka.writeMicroseconds(1500);
+  thrus_ki.writeMicroseconds(1500);
   for (int i=0; i<7; i++)
   {
     pinMode(inApin[i], OUTPUT);
@@ -87,6 +98,8 @@ void setup() {
   pressure_abs = sensor.getPressure(ADC_1024);
   reset_level = pressure_abs;
   set_level = 100;
+  delay(7000);
+  Serial.print("OK_Ready!!!");
 }
 
 void loop() {
@@ -106,13 +119,17 @@ void loop() {
   
   PID_Depth(depth_kp, depth_ki, depth_kd, avg);
   if(mode){
-    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
-    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
+//    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
+//    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
+    thrus_ka.writeMicroseconds(1500);
+    thrus_ki.writeMicroseconds(1500);
     Serial.print("kec : "); Serial.println(de_Output);
   }
   else{
-    motorGo(0,cw,0); 
-    motorGo(1,cw,0);
+//    motorGo(0,cw,0); 
+//    motorGo(1,cw,0);
+    thrus_ka.writeMicroseconds(1500);
+    thrus_ki.writeMicroseconds(1500);
   }
   
   tampil();
