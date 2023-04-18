@@ -37,11 +37,6 @@ unsigned char high_byte, low_byte, angle8;
 int pitch, roll, yaw;
 unsigned int angle16;
 
-//motor_dc control
-//int inApin[4] = {22, 24, 26, 28};  // INA: Clockwise input
-//int inBpin[4] = {23, 25, 27, 29}; // INB: Counter-clockwise input
-//int pwmpin[4] = {5, 6, 7, 8}; // PWM input
-
 int inApin[4] = {26, 28, 22, 24};  // INA: Clockwise input
 int inBpin[4] = {27, 29, 23, 25}; // INB: Counter-clockwise input
 int pwmpin[4] = {7, 8, 5, 6}; // PWM input
@@ -56,12 +51,12 @@ double base_altitude = 1655.0; // Altitude of SparkFun's HQ in Boulder, CO. in (
 
 //PID Library parameter
 double de_Setpoint, de_Input, de_Output;
-PID depth_PID(&de_Input, &de_Output, &de_Setpoint,6,2,1, DIRECT);
-double Speed_ka = 0, Speed_ki = 0;
 float depth_kp,depth_ki,depth_kd;
+PID depth_PID(&de_Input, &de_Output, &de_Setpoint,depth_kp,depth_ki,depth_kd, DIRECT);
+double Speed_ka = 0, Speed_ki = 0;
 
 String inputString1 = "";
-boolean mode = true;
+boolean mode = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -70,10 +65,10 @@ void setup() {
   //pressure sensor
   sensor.reset();
   sensor.begin();
-  thrus_ka.attach(thrus_ka_pin);
-  thrus_ki.attach(thrus_ki_pin);
-  thrus_ka.writeMicroseconds(1500);
-  thrus_ki.writeMicroseconds(1500);
+  
+  thrus_ka.attach(thrus_ka_pin);  thrus_ka.writeMicroseconds(1500);
+  thrus_ki.attach(thrus_ki_pin);  thrus_ki.writeMicroseconds(1500);
+  
   for (int i=0; i<7; i++)
   {
     pinMode(inApin[i], OUTPUT);
@@ -91,7 +86,7 @@ void setup() {
   de_Input =  pressure_abs;
 
   depth_PID.SetMode(AUTOMATIC);
-  depth_PID.SetOutputLimits(-255,255);
+  depth_PID.SetOutputLimits(0,200);
   
 //  depth_kp = EEPROM.read(4); depth_ki = EEPROM.read(5)*0.1;  depth_kd = EEPROM.read(6)*0.1;
   depth_kp = 10; depth_ki = 0; depth_kd = 0;
@@ -103,18 +98,25 @@ void setup() {
   reset_level = pressure_abs;
   set_level = 100;
   delay(7000);
-  Serial.print("OK_Ready!!!");
+  Serial.println("OK_Ready!!!");
 }
 
 void loop() {
-//  motorGo(1,cw,50);
-//  motorGo(2,cw,50);
-//  motorGo(3,cw,50);
+  motorGo(0,cw,50);
+  motorGo(1,cw,50);
+  motorGo(2,cw,50);
+  motorGo(3,cw,50);
+  delay(2000);
+  motorGo(0,ccw,50);
+  motorGo(1,ccw,50);
+  motorGo(2,ccw,50);
+  motorGo(3,ccw,50);
+  delay(2000);
+
+  /*
 //  thrus_ka.writeMicroseconds(1600);
 //  thrus_ki.writeMicroseconds(1700);
   // put your main code here, to run repeatedly:
-//  motorGo(0,cw,50);
-
   CMPS();
   
   suhu= sensor.getTemperature(CELSIUS, ADC_1024);     //read temperature from the sensor in celsius.
@@ -122,24 +124,29 @@ void loop() {
   myRA.addValue(pressure_abs);
   avg = myRA.getFastAverage();
   water_level = avg - reset_level;
-  /*
+  
   PID_Depth(depth_kp, depth_ki, depth_kd, avg);
   if(mode){
 //    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
 //    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
-    thrus_ka.writeMicroseconds(1500);
-    thrus_ki.writeMicroseconds(1500);
+    if(de_Output>0){
+      thrus_ka.writeMicroseconds(1500 - de_Output);
+      thrus_ki.writeMicroseconds(1500 + de_Output);
+    }
+    else if (de_Output<0){
+      thrus_ka.writeMicroseconds(1500 + de_Output);
+      thrus_ki.writeMicroseconds(1500 - de_Output);
+    }
     Serial.print("kec : "); Serial.println(de_Output);
     if(water_level>80){
-      
+      //motion
     }
   }
   else{
-//    motorGo(0,cw,0); 
-//    motorGo(1,cw,0);
     thrus_ka.writeMicroseconds(1500);
     thrus_ki.writeMicroseconds(1500);
   }
-  */
+  
   tampil();
+  */
 }
