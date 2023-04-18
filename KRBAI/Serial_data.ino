@@ -31,11 +31,11 @@ void serialEvent() {
       //atur PWM Motor 0-255 ---> "m1250"
       else if(inputString1.substring(0,2)=="m1"){
         int kec =inputString1.substring(2).toInt();
-        motorGo(0,cw,kec);
+        motorGo(0,ccw,kec);
       }
       else if(inputString1.substring(0,2)=="m2"){
         int kec =inputString1.substring(2).toInt();
-        motorGo(1,cw,kec);
+        motorGo(1,ccw,kec);
       }
       else if(inputString1.substring(0,2)=="m3"){
         int kec =inputString1.substring(2).toInt();
@@ -43,7 +43,7 @@ void serialEvent() {
       }
       else if(inputString1.substring(0,2)=="m4"){
         int kec =inputString1.substring(2).toInt();
-        motorGo(3,cw,kec);
+        motorGo(3,ccw,kec);
       }
       //atur PWM Motor 1100-1900 ---> "ka1400"
       else if(inputString1.substring(0,2)=="ka"){

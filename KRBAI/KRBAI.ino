@@ -38,9 +38,13 @@ int pitch, roll, yaw;
 unsigned int angle16;
 
 //motor_dc control
-int inApin[4] = {22, 24, 26, 28};  // INA: Clockwise input
-int inBpin[4] = {23, 25, 27, 29}; // INB: Counter-clockwise input
-int pwmpin[4] = {5, 6, 7, 8}; // PWM input
+//int inApin[4] = {22, 24, 26, 28};  // INA: Clockwise input
+//int inBpin[4] = {23, 25, 27, 29}; // INB: Counter-clockwise input
+//int pwmpin[4] = {5, 6, 7, 8}; // PWM input
+
+int inApin[4] = {26, 28, 22, 24};  // INA: Clockwise input
+int inBpin[4] = {27, 29, 23, 25}; // INB: Counter-clockwise input
+int pwmpin[4] = {7, 8, 5, 6}; // PWM input
 
 unsigned int suhu;
 double pressure_abs;
@@ -103,11 +107,13 @@ void setup() {
 }
 
 void loop() {
+//  motorGo(1,cw,50);
+//  motorGo(2,cw,50);
+//  motorGo(3,cw,50);
+//  thrus_ka.writeMicroseconds(1600);
+//  thrus_ki.writeMicroseconds(1700);
   // put your main code here, to run repeatedly:
-//  motorGo(0,cw,100);
-//  motorGo(1,cw,100);
-//  motorGo(2,cw,100);
-//  motorGo(3,cw,100);
+//  motorGo(0,cw,50);
 
   CMPS();
   
@@ -116,7 +122,7 @@ void loop() {
   myRA.addValue(pressure_abs);
   avg = myRA.getFastAverage();
   water_level = avg - reset_level;
-  
+  /*
   PID_Depth(depth_kp, depth_ki, depth_kd, avg);
   if(mode){
 //    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
@@ -124,6 +130,9 @@ void loop() {
     thrus_ka.writeMicroseconds(1500);
     thrus_ki.writeMicroseconds(1500);
     Serial.print("kec : "); Serial.println(de_Output);
+    if(water_level>80){
+      
+    }
   }
   else{
 //    motorGo(0,cw,0); 
@@ -131,6 +140,6 @@ void loop() {
     thrus_ka.writeMicroseconds(1500);
     thrus_ki.writeMicroseconds(1500);
   }
-  
+  */
   tampil();
 }
