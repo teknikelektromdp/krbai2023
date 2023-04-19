@@ -11,7 +11,7 @@
 #include <Servo.h>
 #include "SparkFun_MS5803_I2C.h"
 #include "I2Cdev.h"
-#include "EEPROM.h"
+//#include "EEPROM.h"
 #include "KalmanFilter.h"
 #include "PID_v1.h"
 #include "RunningAverage.h"
