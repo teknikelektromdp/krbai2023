@@ -12,7 +12,6 @@
 #include "SparkFun_MS5803_I2C.h"
 #include "I2Cdev.h"
 #include "EEPROM.h"
-#include "MPU6050.h"
 #include "KalmanFilter.h"
 #include "PID_v1.h"
 #include "RunningAverage.h"
@@ -102,18 +101,18 @@ void setup() {
 }
 
 void loop() {
-  motorGo(0,cw,50);
-  motorGo(1,cw,50);
-  motorGo(2,cw,50);
-  motorGo(3,cw,50);
-  delay(2000);
-  motorGo(0,ccw,50);
-  motorGo(1,ccw,50);
-  motorGo(2,ccw,50);
-  motorGo(3,ccw,50);
-  delay(2000);
+//  motorGo(0,cw,50);
+//  motorGo(1,cw,50);
+//  motorGo(2,cw,50);
+//  motorGo(3,cw,50);
+//  delay(2000);
+//  motorGo(0,ccw,50);
+//  motorGo(1,ccw,50);
+//  motorGo(2,ccw,50);
+//  motorGo(3,ccw,50);
+//  delay(2000);
 
-  /*
+  
 //  thrus_ka.writeMicroseconds(1600);
 //  thrus_ki.writeMicroseconds(1700);
   // put your main code here, to run repeatedly:
@@ -148,5 +147,5 @@ void loop() {
   }
   
   tampil();
-  */
+  
 }
