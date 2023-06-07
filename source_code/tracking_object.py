@@ -3,7 +3,7 @@ import math
 import numpy as np
 import serial
 import time
-arduino = serial.Serial('/dev/ttyUSB0', 9600, timeout=.1)
+arduino = serial.Serial('/dev/ttyACM0', 9600, timeout=.1)
 kernel = np.ones((5,5),np.uint8)
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)

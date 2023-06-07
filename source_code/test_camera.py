@@ -2,7 +2,7 @@
 import cv2
 
 #Variable untuk VideoCapture
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 #Fungsi untuk membuat frame pengaturan pada video
 while(True):

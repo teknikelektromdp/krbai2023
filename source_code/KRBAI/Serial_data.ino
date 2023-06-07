@@ -25,6 +25,7 @@ void serialEvent() {
       }
       else if(inputString1.substring(0,2)=="au"){
           //program auto misi 1
+          misi = !misi;
       }
       else if(inputString1.substring(0,2)=="so"){
           SOS();

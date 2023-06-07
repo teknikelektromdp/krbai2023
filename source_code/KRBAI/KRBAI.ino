@@ -1,3 +1,5 @@
+#include <MS5803.h>
+
 /*********************************************
  * Depth control and motion control for Underwater_ROV in sea levels
  * using pressure sensor MS5803 14B and IMU CMPS12
@@ -9,10 +11,9 @@
  ********************************************/
 #include <Wire.h>
 #include <Servo.h>
-#include <MS5803lib.h>
 #include "I2Cdev.h"
 //#include "EEPROM.h"
-#include "KalmanFilter.h"
+//#include "KalmanFilter.h"
 #include "PID_v1.h"
 #include "RunningAverage.h"
 
@@ -72,6 +73,7 @@ const unsigned long period = 60000;
 String inputString1 = "";
 boolean mode = false;
 boolean head = false;
+boolean misi = false;
 int state = HIGH;
 
 int pixel_x, pixel_y;
@@ -150,12 +152,17 @@ void loop() {
   PID_Roll(roll_kp, roll_ki, roll_kd, yaw);
   
   currentMillis = millis();
-  if (currentMillis - startMillis >= period){
-    mode = false;
-    head = false;
-    set_level = 0;    
-    startMillis = currentMillis;
-    Serial.println("Mode Auto Misi Pertama Selesai");
+  if(misi){
+    set_level = 60;
+    mode = true;
+    head = true;
+    if (currentMillis - startMillis >= period){
+//      mode = false;
+      head = false;
+      set_level = 0;    
+      startMillis = currentMillis;
+      Serial.println("Mode Auto Misi Pertama Selesai");
+    }
   }
   
   if(mode){
