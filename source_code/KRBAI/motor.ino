@@ -22,10 +22,10 @@ void forward()
 //  motorGo(1,ccw,100);
 //  motorGo(2,cw,75);
 //  motorGo(3,cw,100);
-  thrus_1.writeMicroseconds(1300);
-  thrus_2.writeMicroseconds(1700);
-  thrus_3.writeMicroseconds(1300);
-  thrus_4.writeMicroseconds(1300);
+  thrus_1.writeMicroseconds(1700);
+  thrus_2.writeMicroseconds(1300);
+  thrus_3.writeMicroseconds(1700);
+  thrus_4.writeMicroseconds(1700);
 }
 void back()
 {
@@ -33,10 +33,10 @@ void back()
 //  motorGo(1,cw,75);
 //  motorGo(2,ccw,75);
 //  motorGo(3,ccw,75);
-  thrus_1.writeMicroseconds(1700);
-  thrus_2.writeMicroseconds(1300);
-  thrus_3.writeMicroseconds(1700);
-  thrus_4.writeMicroseconds(1700);
+  thrus_1.writeMicroseconds(1300);
+  thrus_2.writeMicroseconds(1700);
+  thrus_3.writeMicroseconds(1300);
+  thrus_4.writeMicroseconds(1300);
 }
 void shift_left()
 {
@@ -44,10 +44,10 @@ void shift_left()
 //  motorGo(1,ccw,75);
 //  motorGo(2,cw,75);
 //  motorGo(3,ccw,75);
-  thrus_1.writeMicroseconds(1700);
-  thrus_2.writeMicroseconds(1700);
-  thrus_3.writeMicroseconds(1300);
-  thrus_4.writeMicroseconds(1700);
+  thrus_1.writeMicroseconds(1300);
+  thrus_2.writeMicroseconds(1300);
+  thrus_3.writeMicroseconds(1700);
+  thrus_4.writeMicroseconds(1300);
 }
 void shift_right()
 {
@@ -55,10 +55,10 @@ void shift_right()
 //  motorGo(1,cw,75);
 //  motorGo(2,ccw,75);
 //  motorGo(3,cw,75);
-  thrus_1.writeMicroseconds(1300);
-  thrus_2.writeMicroseconds(1300);
-  thrus_3.writeMicroseconds(1700);
-  thrus_4.writeMicroseconds(1300);
+  thrus_1.writeMicroseconds(1700);
+  thrus_2.writeMicroseconds(1700);
+  thrus_3.writeMicroseconds(1300);
+  thrus_4.writeMicroseconds(1700);
 }
 void right_rotate()
 {
@@ -66,10 +66,10 @@ void right_rotate()
 //  motorGo(1,cw,75);
 //  motorGo(2,cw,75);
 //  motorGo(3,ccw,75);
-  thrus_1.writeMicroseconds(1300);
-  thrus_2.writeMicroseconds(1300);
-  thrus_3.writeMicroseconds(1300);
-  thrus_4.writeMicroseconds(1700);
+  thrus_1.writeMicroseconds(1700);
+  thrus_2.writeMicroseconds(1700);
+  thrus_3.writeMicroseconds(1700);
+  thrus_4.writeMicroseconds(1300);
 }
 void rr_PID(int kec)
 {
@@ -77,10 +77,10 @@ void rr_PID(int kec)
 //  motorGo(1,cw,kec);
 //  motorGo(2,cw,kec);
 //  motorGo(3,ccw,kec);
-  thrus_1.writeMicroseconds(1500 - kec);
-  thrus_2.writeMicroseconds(1500 - kec);
-  thrus_3.writeMicroseconds(1500 - kec);
-  thrus_4.writeMicroseconds(1500 + kec);
+  thrus_1.writeMicroseconds(1500 + kec);
+  thrus_2.writeMicroseconds(1500 + kec);
+  thrus_3.writeMicroseconds(1500 + kec);
+  thrus_4.writeMicroseconds(1500 - kec);
 }
 void left_rotate()
 {
@@ -88,10 +88,10 @@ void left_rotate()
 //  motorGo(1,ccw,75);
 //  motorGo(2,ccw,75);
 //  motorGo(3,cw,75);
-  thrus_1.writeMicroseconds(1700);
-  thrus_2.writeMicroseconds(1700);
-  thrus_3.writeMicroseconds(1700);
-  thrus_4.writeMicroseconds(1300);
+  thrus_1.writeMicroseconds(1300);
+  thrus_2.writeMicroseconds(1300);
+  thrus_3.writeMicroseconds(1300);
+  thrus_4.writeMicroseconds(1700);
 }
 void lr_PID(int kec)
 {
@@ -99,10 +99,10 @@ void lr_PID(int kec)
 //  motorGo(1,ccw,kec);
 //  motorGo(2,ccw,kec);
 //  motorGo(3,cw,kec);
-  thrus_1.writeMicroseconds(1500 + kec);
-  thrus_2.writeMicroseconds(1500 + kec);
-  thrus_3.writeMicroseconds(1500 + kec);
-  thrus_4.writeMicroseconds(1500 - kec);
+  thrus_1.writeMicroseconds(1500 - kec);
+  thrus_2.writeMicroseconds(1500 - kec);
+  thrus_3.writeMicroseconds(1500 - kec);
+  thrus_4.writeMicroseconds(1500 + kec);
 }
 void berhenti()
 {
