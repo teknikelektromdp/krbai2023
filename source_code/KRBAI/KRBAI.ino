@@ -11,7 +11,7 @@
 #include <Servo.h>
 #include <MS5803.h>
 #include "I2Cdev.h"
-//#include "EEPROM.h"
+#include "EEPROM.h"
 //#include "KalmanFilter.h"
 #include "PID_v1.h"
 #include "RunningAverage.h"
@@ -130,11 +130,14 @@ void setup() {
 
   depth_PID.SetMode(AUTOMATIC);
   depth_PID.SetOutputLimits(-200,200);
-
+//  depth_kp = 10; depth_ki = 0; depth_kd = 0;
+  depth_kp = EEPROM.read(2); depth_ki = EEPROM.read(3)*0.1;  depth_kd = EEPROM.read(4)*0.1;
+  
   head_PID.SetMode(AUTOMATIC);
   head_PID.SetOutputLimits(-200,200);
   head_kp = 10; head_ki = 0; head_kd = 2;
-
+  depth_kp = EEPROM.read(5); depth_ki = EEPROM.read(6)*0.1;  depth_kd = EEPROM.read(7)*0.1;
+  
   roll_PID.SetMode(AUTOMATIC);
   roll_PID.SetOutputLimits(-50,50);
   roll_kp = 10; roll_ki = 0; roll_kd = 0;
@@ -144,14 +147,15 @@ void setup() {
   pitch_kp = 10; pitch_ki = 0; pitch_kd = 2;
   
 //  depth_kp = EEPROM.read(4); depth_ki = EEPROM.read(5)*0.1;  depth_kd = EEPROM.read(6)*0.1;
-  depth_kp = 10; depth_ki = 0; depth_kd = 0;
   Serial.print("Kp = "); Serial.print(depth_kp);
   Serial.print(", Ki = "); Serial.print(depth_ki);
   Serial.print(", Kd = "); Serial.println(depth_kd);
 
+  
   pressure_abs = sensor.getPressure(ADC_1024);
   reset_level = pressure_abs;
-  set_level = 50;
+//  set_level = 50;
+  set_level = EEPROM.read(1);
   CMPS();
   set_head = yaw;
   Serial.print("Set Point depth = ");Serial.println(set_level);
@@ -248,4 +252,5 @@ void loop() {
 //      berhenti();
   }
   tampil();
+  
 }

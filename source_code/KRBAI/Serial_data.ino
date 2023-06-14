@@ -3,7 +3,7 @@ void tampil(){
   Serial.print(", pitch: ");       Serial.print(pitch);
   Serial.print(", Yaw(angle): ");  Serial.println(yaw);
 
-//  Serial.print("SP_depth (cm): ");    Serial.print(set_level);
+  Serial.print("SP_depth(cm): ");    Serial.print(set_level);
 //  Serial.print(", set_point: ");        Serial.print(de_Setpoint);
   Serial.print(", Pressure: ");   Serial.print(avg);
   Serial.print(", water_lvl: ");  Serial.println(water_level);
@@ -55,37 +55,44 @@ void serialEvent() {
       }
       else if(inputString1.substring(0,1)=="s"){
         int nilai =inputString1.substring(1).toInt();
+        EEPROM.write(1,nilai);
         set_level = nilai;
         Serial.print("Set_point"); Serial.println(nilai);
       }
       else if(inputString1.substring(0,1)=="p"){
         int pid =inputString1.substring(1).toInt();
-        depth_kp = pid;
+        EEPROM.write(2,pid);
+        depth_kp = EEPROM.read(2);
         Serial.print("depth_kp = "); Serial.println(depth_kp);
       }
       else if(inputString1.substring(0,1)=="i"){
         int pid =inputString1.substring(1).toInt();
-        depth_ki = pid;
+        EEPROM.write(3,pid);
+        depth_ki = EEPROM.read(3)*0.1;
         Serial.print("depth_ki = "); Serial.println(depth_ki);
       }
       else if(inputString1.substring(0,1)=="d"){
         int pid =inputString1.substring(1).toInt();
-        depth_kd = pid;
+        EEPROM.write(4,pid);
+        depth_kd = EEPROM.read(4)*0.1;
         Serial.print("depth_kd = "); Serial.println(depth_kd);
       }
       else if(inputString1.substring(0,2)=="hp"){
         int pid =inputString1.substring(2).toInt();
-        head_kp = pid;
+        EEPROM.write(5,pid);
+        head_kp = EEPROM.read(5);
         Serial.print("head_kp = "); Serial.println(head_kp);
       }
       else if(inputString1.substring(0,2)=="hi"){
         int pid =inputString1.substring(2).toInt();
-        head_ki = pid;
+        EEPROM.write(6,pid);
+        head_ki = EEPROM.read(6)*0.1;
         Serial.print("head_ki = "); Serial.println(head_ki);
       }
       else if(inputString1.substring(0,2)=="hd"){
         int pid =inputString1.substring(2).toInt();
-        head_kd = pid;
+        EEPROM.write(7,pid);
+        head_kd = EEPROM.read(7)*0.1;
         Serial.print("head_kd = "); Serial.println(head_kd);
       }
       //atur PWM Motor 0-255 ---> "m1250"
