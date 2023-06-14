@@ -35,8 +35,8 @@ byte thrus_ka_pin = 7;
 byte thrus_ki_pin = 8;
 byte thrus_pi_pin = 9;
 byte thrus_1_pin = 10;
-byte thrus_2_pin = 16;
-byte thrus_3_pin = 11;
+byte thrus_2_pin = 11;
+byte thrus_3_pin = 16;
 byte thrus_4_pin = 12;
 
 RunningAverage myRA(10);
