@@ -23,3 +23,11 @@ void PID_Roll(float roll_kp, float roll_ki, float roll_kd, float roll)
   roll_PID.SetTunings(roll_kp,roll_ki,roll_kd);
   roll_PID.Compute();
 }
+
+void PID_pitch(float pitch_kp, float pitch_ki, float pitch_kd, float pitch)
+{
+  pi_Setpoint = 0;
+  pi_Input =  pitch;
+  pitch_PID.SetTunings(pitch_kp,pitch_ki,pitch_kd);
+  pitch_PID.Compute();
+}

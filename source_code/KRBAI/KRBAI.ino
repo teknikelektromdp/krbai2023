@@ -1,5 +1,3 @@
-#include <MS5803.h>
-
 /*********************************************
  * Depth control and motion control for Underwater_ROV in sea levels
  * using pressure sensor MS5803 14B and IMU CMPS12
@@ -11,6 +9,7 @@
  ********************************************/
 #include <Wire.h>
 #include <Servo.h>
+#include <MS5803.h>
 #include "I2Cdev.h"
 //#include "EEPROM.h"
 //#include "KalmanFilter.h"
@@ -26,8 +25,19 @@
 
 Servo thrus_ka;
 Servo thrus_ki;
-byte thrus_ka_pin = 9;
-byte thrus_ki_pin = 10;
+Servo thrus_pi;
+Servo thrus_1;
+Servo thrus_2;
+Servo thrus_3;
+Servo thrus_4;
+
+byte thrus_ka_pin = 7;
+byte thrus_ki_pin = 8;
+byte thrus_pi_pin = 9;
+byte thrus_1_pin = 10;
+byte thrus_2_pin = 16;
+byte thrus_3_pin = 11;
+byte thrus_4_pin = 12;
 
 RunningAverage myRA(10);
 
@@ -55,7 +65,6 @@ double de_Setpoint, de_Input, de_Output;
 float depth_kp,depth_ki,depth_kd;
 PID depth_PID(&de_Input, &de_Output, &de_Setpoint,depth_kp,depth_ki,depth_kd, DIRECT);
 
-
 //PID Heading
 double he_Setpoint, he_Input, he_Output;
 float head_kp,head_ki,head_kd;
@@ -66,14 +75,21 @@ double ro_Setpoint, ro_Input, ro_Output;
 float roll_kp,roll_ki,roll_kd;
 PID roll_PID(&ro_Input, &ro_Output, &ro_Setpoint,roll_kp,roll_ki,roll_kd, DIRECT);
 
+//PID Pitch
+double pi_Setpoint, pi_Input, pi_Output;
+float pitch_kp,pitch_ki,pitch_kd;
+PID pitch_PID(&pi_Input, &pi_Output, &pi_Setpoint,pitch_kp,pitch_ki,pitch_kd, DIRECT);
+
 unsigned long startMillis;  
 unsigned long currentMillis;
-const unsigned long period = 60000;
+const unsigned long period = 60000;   //periode lama menyelam
 
 String inputString1 = "";
 boolean mode = false;
 boolean head = false;
 boolean misi = false;
+boolean misi2 = false;
+boolean pitch_status = false;
 int state = HIGH;
 
 int pixel_x, pixel_y;
@@ -88,6 +104,11 @@ void setup() {
   
   thrus_ka.attach(thrus_ka_pin);  thrus_ka.writeMicroseconds(1500);
   thrus_ki.attach(thrus_ki_pin);  thrus_ki.writeMicroseconds(1500);
+  thrus_pi.attach(thrus_pi_pin);  thrus_pi.writeMicroseconds(1500);
+  thrus_1.attach(thrus_1_pin);  thrus_1.writeMicroseconds(1500);
+  thrus_2.attach(thrus_2_pin);  thrus_2.writeMicroseconds(1500);
+  thrus_3.attach(thrus_3_pin);  thrus_3.writeMicroseconds(1500);
+  thrus_4.attach(thrus_4_pin);  thrus_4.writeMicroseconds(1500);
   
   for (int i=0; i<7; i++)
   {
@@ -117,6 +138,10 @@ void setup() {
   roll_PID.SetMode(AUTOMATIC);
   roll_PID.SetOutputLimits(-50,50);
   roll_kp = 10; roll_ki = 0; roll_kd = 0;
+
+  pitch_PID.SetMode(AUTOMATIC);
+  pitch_PID.SetOutputLimits(-200,200);
+  pitch_kp = 10; pitch_ki = 0; pitch_kd = 2;
   
 //  depth_kp = EEPROM.read(4); depth_ki = EEPROM.read(5)*0.1;  depth_kd = EEPROM.read(6)*0.1;
   depth_kp = 10; depth_ki = 0; depth_kd = 0;
@@ -149,8 +174,10 @@ void loop() {
   
   PID_Depth(depth_kp, depth_ki, depth_kd, avg);
   PID_Heading(head_kp, head_ki, head_kd, yaw);
-  PID_Roll(roll_kp, roll_ki, roll_kd, yaw);
-  
+  PID_Roll(roll_kp, roll_ki, roll_kd, roll);
+  PID_pitch(pitch_kp, pitch_ki, pitch_kd, pitch);
+
+  //misi utama berdasarkan waktu
   currentMillis = millis();
   if(misi){
     set_level = 60;
@@ -164,7 +191,15 @@ void loop() {
       Serial.println("Mode Auto Misi Pertama Selesai");
     }
   }
-  
+
+  //Misi tambahan image pro
+  if(misi2){
+    set_level = 60;
+    mode = true;
+    head = true;
+  }
+
+  //depth control
   if(mode){
 //    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
 //    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
@@ -181,24 +216,36 @@ void loop() {
 //      //motion
 //    }
   }
+  
+  //heading control
   if(head){
     if(he_Output>10){
         rr_PID(abs(he_Output));
-      }
+    }
     else if (he_Output<-10){
         lr_PID(abs(he_Output));
-      }
+    }
 //    Serial.print("kec : "); Serial.println(de_Output);
 //    if(water_level>80){
 //      //motion
 //    }
     else{
         forward();
-      } 
+    } 
+  }
+    
+  //pitch control
+  if(pitch_status){
+    if(pi_Output>0){
+      thrus_pi.writeMicroseconds(1500 - abs(pi_Output));
     }
+    else if (pi_Output<0){
+      thrus_pi.writeMicroseconds(1500 + abs(pi_Output));
+    }
+  }
     
   else{
 //      berhenti();
-  } 
+  }
   tampil();
 }

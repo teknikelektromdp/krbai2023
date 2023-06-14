@@ -17,10 +17,15 @@ void serialEvent() {
      inputString1 += inChar;
      if (inChar == '\n') {
       if(inputString1.substring(0,2)=="st"){
-          motorGo(0,cw,0);motorGo(1,cw,0);
-          motorGo(2,cw,0);motorGo(3,cw,0);
+//          motorGo(0,cw,0);motorGo(1,cw,0);
+//          motorGo(2,cw,0);motorGo(3,cw,0);
           thrus_ka.writeMicroseconds(1500);
           thrus_ki.writeMicroseconds(1500);
+          thrus_pi.writeMicroseconds(1500);
+          thrus_1.writeMicroseconds(1500);
+          thrus_2.writeMicroseconds(1500);
+          thrus_3.writeMicroseconds(1500);
+          thrus_4.writeMicroseconds(1500);
           Serial.println("OK STOP");
       }
       else if(inputString1.substring(0,2)=="au"){
