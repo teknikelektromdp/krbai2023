@@ -14,8 +14,8 @@ void CMPS(){
   angle8 = Wire.read();               // Read back the 5 bytes
   high_byte = Wire.read();
   low_byte = Wire.read();
-  pitch_data = Wire.read();   pitch = pitch_data, DEC;
-  roll_data = Wire.read();    roll = roll_data, DEC;
+  pitch_data = Wire.read();   roll = pitch_data, DEC;
+  roll_data = Wire.read();    pitch = roll_data, DEC;
   
   angle16 = high_byte;                 // Calculate 16 bit angle
   angle16 <<= 8;

@@ -1,6 +1,6 @@
 void tampil(){
-//  Serial.print("roll: ");          Serial.print(roll);
-//  Serial.print(", pitch: ");       Serial.print(pitch);
+  Serial.print("roll: ");          Serial.print(roll);
+  Serial.print(", pitch: ");       Serial.print(pitch);
   Serial.print(", Yaw(angle): ");  Serial.println(yaw);
 
 //  Serial.print("SP_depth (cm): ");    Serial.print(set_level);
