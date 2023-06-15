@@ -82,16 +82,20 @@ PID pitch_PID(&pi_Input, &pi_Output, &pi_Setpoint,pitch_kp,pitch_ki,pitch_kd, DI
 
 unsigned long startMillis;  
 unsigned long currentMillis;
-const unsigned long period = 60000;   //periode lama menyelam
+const unsigned long period = 80000;   //periode lama menyelam
 
 String inputString1 = "";
 String inputString2 = "";
 boolean mode = false;
-boolean head = false;
+boolean head = true;
 boolean misi = false;
 boolean misi2 = false;
+<<<<<<< HEAD
 boolean objek = false;
 boolean pitch_status = false;
+=======
+boolean pitch_status = true;
+>>>>>>> 1609fa56b7f6c489d4208730e847c919b41e6b39
 int state = HIGH;
 
 int pixel_x, pixel_y;
@@ -133,13 +137,17 @@ void setup() {
 
   depth_PID.SetMode(AUTOMATIC);
   depth_PID.SetOutputLimits(-200,200);
-//  depth_kp = 10; depth_ki = 0; depth_kd = 0;
-  depth_kp = EEPROM.read(2); depth_ki = EEPROM.read(3)*0.1;  depth_kd = EEPROM.read(4)*0.1;
+  depth_kp = 20; depth_ki = 0; depth_kd = 0;
+//  depth_kp = EEPROM.read(2); depth_ki = EEPROM.read(3)*0.1;  depth_kd = EEPROM.read(4)*0.1;
   
   head_PID.SetMode(AUTOMATIC);
   head_PID.SetOutputLimits(-200,200);
   head_kp = 10; head_ki = 0; head_kd = 2;
+<<<<<<< HEAD
   head_kp = EEPROM.read(5); head_ki = EEPROM.read(6)*0.1;  head_kd = EEPROM.read(7)*0.1;
+=======
+//  head_kp = EEPROM.read(5); head_ki = EEPROM.read(6)*0.1; head_kd = EEPROM.read(7)*0.1;
+>>>>>>> 1609fa56b7f6c489d4208730e847c919b41e6b39
   
   roll_PID.SetMode(AUTOMATIC);
   roll_PID.SetOutputLimits(-50,50);
@@ -154,11 +162,10 @@ void setup() {
   Serial.print(", Ki = "); Serial.print(depth_ki);
   Serial.print(", Kd = "); Serial.println(depth_kd);
 
-  
   pressure_abs = sensor.getPressure(ADC_1024);
   reset_level = pressure_abs;
-//  set_level = 50;
-  set_level = EEPROM.read(1);
+  set_level = 50;
+//  set_level = EEPROM.read(1);
   CMPS();
   set_head = yaw;
   Serial.print("Set Point depth = ");Serial.println(set_level);
@@ -187,7 +194,7 @@ void loop() {
   //misi utama berdasarkan waktu
   currentMillis = millis();
   if(misi){
-    set_level = 60;
+    set_level = 50;
     mode = true;
     head = true;
     if (currentMillis - startMillis >= period){
@@ -201,7 +208,7 @@ void loop() {
 
   //Misi tambahan image pro
   if(misi2){
-    set_level = 60;
+    set_level = 50;
     mode = true;
     head = true;
   }
@@ -210,11 +217,11 @@ void loop() {
   if(mode){
 //    motorGo(0,de_Output>0?cw:ccw,abs(de_Output)); 
 //    motorGo(1,de_Output>0?ccw:cw,abs(de_Output));
-    if(de_Output>0){
+    if(de_Output<0){
       thrus_ka.writeMicroseconds(1500 - abs(de_Output));
       thrus_ki.writeMicroseconds(1500 + abs(de_Output));
     }
-    else if (de_Output<0){
+    else if (de_Output>0){
       thrus_ka.writeMicroseconds(1500 + abs(de_Output));
       thrus_ki.writeMicroseconds(1500 - abs(de_Output));
     }
@@ -226,6 +233,7 @@ void loop() {
   Serial.print("kec : "); Serial.println(he_Output);
   //heading control
   if(head){
+<<<<<<< HEAD
     if(he_Output>30){
         rr_PID(abs(he_Output));
     }
@@ -233,12 +241,21 @@ void loop() {
         lr_PID(abs(he_Output));
     }
 //    
+=======
+    if(set_head > set_head-5){
+        lr_PID(abs(he_Output));
+    }
+    else if (set_head < set_head+5){
+        rr_PID(abs(he_Output));
+    }
+>>>>>>> 1609fa56b7f6c489d4208730e847c919b41e6b39
 //    if(water_level>80){
 //      //motion
 //    }
     else{
         forward();
     } 
+    Serial.print("kec : "); Serial.println(he_Output);
   }
     
   //pitch control
