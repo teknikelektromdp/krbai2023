@@ -6,6 +6,11 @@
 
 import cv2
 import numpy as np
+import serial
+import time
+import math
+
+arduino = serial.Serial('/dev/ttyUSB1', 9600, timeout=.1)
 
 kernel = np.ones((5,5),np.uint8)
 cap = cv2.VideoCapture(0)
@@ -32,6 +37,9 @@ hthresh3 = cv2.inRange(np.array(20),np.array(111),np.array(173))
 sthresh3 = cv2.inRange(np.array(39),np.array(58),np.array(87))
 vthresh3 = cv2.inRange(np.array(20),np.array(75),np.array(255))
 while(1):
+    data = arduino.readline()
+    print (data)
+    radius=0
     ret, frame = cap.read()
     # Konversi frame ke mode HSV
     hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
@@ -111,6 +119,14 @@ while(1):
         cv2.putText(frame, f"Yellow Circle {x2}, {y2}", (x2-20, y2-radius), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (255,255,255), 1, cv2.LINE_AA)
         print(f"Area = {largest_circle}")
         
+        posx=str(x2)
+        posy=str(y2)
+        arduino.write('x'.encode())
+        arduino.write(posx.encode())
+        arduino.write('\n'.encode())
+        arduino.write('y'.encode())
+        arduino.write(posy.encode())
+        arduino.write('\n'.encode())
         
     for contour in contours3:
         perimeter = cv2.arcLength(contour, True)

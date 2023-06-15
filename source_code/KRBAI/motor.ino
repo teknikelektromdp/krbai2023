@@ -49,6 +49,13 @@ void shift_left()
   thrus_3.writeMicroseconds(1700);
   thrus_4.writeMicroseconds(1300);
 }
+void shift_left1(int kec)
+{
+  thrus_1.writeMicroseconds(1500 - kec);
+  thrus_2.writeMicroseconds(1500 - kec);
+  thrus_3.writeMicroseconds(1500 + kec);
+  thrus_4.writeMicroseconds(1500 - kec);
+}
 void shift_right()
 {
 //  motorGo(0,cw,75);
@@ -59,6 +66,13 @@ void shift_right()
   thrus_2.writeMicroseconds(1700);
   thrus_3.writeMicroseconds(1300);
   thrus_4.writeMicroseconds(1700);
+}
+void shift_right1(int kec)
+{
+  thrus_1.writeMicroseconds(1500 + kec);
+  thrus_2.writeMicroseconds(1500 + kec);
+  thrus_3.writeMicroseconds(1500 - kec);
+  thrus_4.writeMicroseconds(1500 + kec);
 }
 void right_rotate()
 {

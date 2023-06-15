@@ -85,10 +85,12 @@ unsigned long currentMillis;
 const unsigned long period = 60000;   //periode lama menyelam
 
 String inputString1 = "";
+String inputString2 = "";
 boolean mode = false;
 boolean head = false;
 boolean misi = false;
 boolean misi2 = false;
+boolean objek = false;
 boolean pitch_status = false;
 int state = HIGH;
 
@@ -97,6 +99,7 @@ int pixel_x, pixel_y;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  Serial1.begin(9600);
   Wire.begin();
   //pressure sensor
   sensor.reset();
@@ -136,7 +139,7 @@ void setup() {
   head_PID.SetMode(AUTOMATIC);
   head_PID.SetOutputLimits(-200,200);
   head_kp = 10; head_ki = 0; head_kd = 2;
-  depth_kp = EEPROM.read(5); depth_ki = EEPROM.read(6)*0.1;  depth_kd = EEPROM.read(7)*0.1;
+  head_kp = EEPROM.read(5); head_ki = EEPROM.read(6)*0.1;  head_kd = EEPROM.read(7)*0.1;
   
   roll_PID.SetMode(AUTOMATIC);
   roll_PID.SetOutputLimits(-50,50);
@@ -220,16 +223,16 @@ void loop() {
 //      //motion
 //    }
   }
-  
+  Serial.print("kec : "); Serial.println(he_Output);
   //heading control
   if(head){
-    if(he_Output>10){
+    if(he_Output>30){
         rr_PID(abs(he_Output));
     }
-    else if (he_Output<-10){
+    else if (he_Output<-30){
         lr_PID(abs(he_Output));
     }
-//    Serial.print("kec : "); Serial.println(de_Output);
+//    
 //    if(water_level>80){
 //      //motion
 //    }
@@ -245,6 +248,19 @@ void loop() {
     }
     else if (pi_Output<0){
       thrus_pi.writeMicroseconds(1500 + abs(pi_Output));
+    }
+  }
+  
+  //left pixel_x set point = 320
+  if(objek){
+    if(pixel_x>330 && pixel_x<640){
+      shift_right1(100);
+    }
+    else if (pixel_x>0 && pixel_x<310){
+      shift_left1(100);
+    }
+    else{
+      berhenti();
     }
   }
     

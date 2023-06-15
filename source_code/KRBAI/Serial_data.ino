@@ -1,12 +1,12 @@
 void tampil(){
-  Serial.print("roll: ");          Serial.print(roll);
-  Serial.print(", pitch: ");       Serial.print(pitch);
+//  Serial.print("roll: ");          Serial.print(roll);
+//  Serial.print(", pitch: ");       Serial.print(pitch);
   Serial.print(", Yaw(angle): ");  Serial.println(yaw);
 
-  Serial.print("SP_depth(cm): ");    Serial.print(set_level);
+//  Serial.print("SP_depth(cm): ");    Serial.print(set_level);
 //  Serial.print(", set_point: ");        Serial.print(de_Setpoint);
-  Serial.print(", Pressure: ");   Serial.print(avg);
-  Serial.print(", water_lvl: ");  Serial.println(water_level);
+//  Serial.print(", Pressure: ");   Serial.print(avg);
+//  Serial.print(", water_lvl: ");  Serial.println(water_level);
 //  Serial.println(de_Output);
   delay(100);
 }
@@ -43,6 +43,11 @@ void serialEvent() {
           head = !head;
           Serial.print("Status PID Head: ");Serial.println(head);
       }
+      else if(inputString1.substring(0,2)=="ob"){
+          objek = !objek;
+          Serial.println("Objek Detection");
+      }
+      /*
       else if(inputString1.substring(0,1)=="x"){
         int pixelx = inputString1.substring(1).toInt();
         pixel_x = pixelx;
@@ -53,6 +58,7 @@ void serialEvent() {
         pixel_y = pixely;
         Serial.print("Pixel_Y ="); Serial.println(pixel_y);
       }
+      */
       else if(inputString1.substring(0,1)=="s"){
         int nilai =inputString1.substring(1).toInt();
         EEPROM.write(1,nilai);

@@ -1,3 +1,4 @@
+/*
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
 {
    const byte* p = (const byte*)(const void*)&value;
@@ -15,3 +16,4 @@ template <class T> int EEPROM_readAnything(int ee, T& value)
        *p++ = EEPROM.read(ee++);
    return i;
 }
+*/
